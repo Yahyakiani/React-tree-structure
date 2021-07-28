@@ -138,9 +138,9 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
         if (jsonData[i]["content"].length !== 0) {
           jsonData[i]["content"] = {
             content: (
-              <div>
+              
                 <Accordion.Accordion panels={jsonData[i]["content"]} />
-              </div>
+              
             ),
           };
         } else {

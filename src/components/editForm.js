@@ -26,7 +26,7 @@ const EditForm = ({ id, name, employees,closeModal }) => {
         setOptions(optionList)
         setSelectedItems(selectList)
         
-    }, [])
+    }, [employees])
 
     const onSubmit = (e)=> {
         e.preventDefault()
