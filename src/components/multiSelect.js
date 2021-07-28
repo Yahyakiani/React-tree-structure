@@ -6,7 +6,6 @@ const MultipleSelect = ({options,selected,setSelect}) => {
 
 
     const onChange = (event, data) => {
-        console.log(selected);
         setSelect(data.value);
     }
 

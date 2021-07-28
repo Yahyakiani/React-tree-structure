@@ -29,7 +29,7 @@ export default function Home() {
       <NavBar />
       <Divider horizontal>
         <Header as='h4'>
-          <Icon name='building icon' />
+          <Icon name='building' />
           Company Details
         </Header>
       </Divider>

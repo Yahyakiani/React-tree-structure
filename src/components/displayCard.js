@@ -23,8 +23,8 @@ const DisplayCard = (props) => {
             />
             <Divider horizontal></Divider>
             {props.projectEmployees?.map((emp) => (
-              <div>
-                <Icon name="user">
+              <div key={emp.id}>
+                <Icon name='user'>
                   {emp.firstName} {emp.lastName}
                 </Icon>
               </div>

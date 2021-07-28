@@ -43,7 +43,6 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
 
         //Employees working on current Project from this company
         const projectEmployees = company.employees?.filter(ce => proj.employeesId?.some(pe => ce.id === pe));
-        // console.log(projectEmployees);
         return {
           key: proj.id,
           title: proj.name,
@@ -64,7 +63,6 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
               projectsPartOf.push(project)
             }
           }
-          // console.log(projectsPartOf);
 
 
           return {
@@ -79,7 +77,6 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
             content: []
           }
         })
-        console.log(areaEmployees.length);
 
         return {
           key: company.employees.filter(e => e.jobArea === emp.jobArea).map(e => e.jobArea)[0],
@@ -178,7 +175,6 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
                
           }
           else if (jsonData[i]?.type ==='ADDRESS'){
-            // console.log(jsonData[i].address[0]);
             jsonData[i]["content"] = {
               content: (
                 <DisplayCard

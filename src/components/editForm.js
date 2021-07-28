@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Button, Checkbox, Form, Modal } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Form } from "semantic-ui-react";
+import { getCompanies } from "../features/companySlice";
 import { selectAllEmployee } from "../features/employeeSlice";
+import { updateProject } from "../features/projectSlice";
 import MultipleSelect from "./multiSelect";
 
 const EditForm = ({ id, name, employees,closeModal }) => {
 
+    const dispatch = useDispatch()
     const [selectedItems, setSelectedItems] = useState([]);
     const [projectName, setProjectname] = useState(name);
     const [options, setOptions] = useState([]);
@@ -32,7 +35,9 @@ const EditForm = ({ id, name, employees,closeModal }) => {
             projectName:projectName,
             employees:selectedItems
         }
-        console.log(projectData);
+        dispatch(updateProject(projectData))
+        dispatch(getCompanies())
+        // console.log(projectData);
         closeModal()
 
     }
