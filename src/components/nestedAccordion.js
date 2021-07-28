@@ -153,6 +153,7 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
             jsonData[i]["content"] = {
               content: (
                 <DisplayCard 
+                id={jsonData[i].key}
                 type={'PROJECTS'}
                 name={jsonData[i].title}
                 department={jsonData[i].department}

@@ -13,7 +13,7 @@ function DetailModal({ name, dob, jobTitle, jobArea, jobType,projects, size }) {
             open={open}
             trigger={<Button>View Details</Button>}
         >
-            <Modal.Content >
+            <Modal.Content>
                 <Modal.Description>
                     <Header>{name}</Header>
                     <p>
@@ -33,7 +33,7 @@ function DetailModal({ name, dob, jobTitle, jobArea, jobType,projects, size }) {
                         <p>
                     <Label>Projects Working on</Label>&nbsp;{projectNames.join(', ')}
                     </p>
-                    : null
+                    :  <Label>No Projects</Label>
                     }
 
                 </Modal.Description>

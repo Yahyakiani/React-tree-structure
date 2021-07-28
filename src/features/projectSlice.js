@@ -8,22 +8,22 @@ const initialState = {
 }
 
 /**
- * Thunk for Retrieveing Project list
+ * Thunk for updating Project 
  *
- * @return {object} Array containing Project objects
+ * 
 */
-export const updateProject = createAsyncThunk(`stamped/${GET_PROJECTS}`, async (project) => {  
-  const resp = await fetch(`${API_URL}/api/projects`, { method: 'GET',body:project }),
+export const updateProject = createAsyncThunk(`stamped/${UPDATE_PROJECTS}`, async (project) => {  
+  const resp = await fetch(`${API_URL}/api/projects/update_project`, { method: 'PUT',body:project }),
   data = await resp.json();
   
   return data;
 })
 /**
- * Thunk for updating Project 
+ * Thunk for Retrieveing Project list
  *
 */
-export const getProjects = createAsyncThunk(`stamped/${UPDATE_PROJECTS}`, async () => {  
-  const resp = await fetch(`${API_URL}/api/projects/update_project`, { method: 'PUT' }),
+export const getProjects = createAsyncThunk(`stamped/${GET_PROJECTS}`, async () => {  
+  const resp = await fetch(`${API_URL}/api/projects`, { method: 'GET' }),
   data = await resp.json();
   
   return data;
@@ -41,10 +41,10 @@ export const projectSlice = createSlice({
       state.projects.push(action.payload)
     },
 
-    [updateProject.fulfilled]: (state, action) => {
+    // [updateProject.fulfilled]: (state, action) => {
 
-      return [...state]
-    }
+    //   return [...state]
+    // }
   }
   
 })
