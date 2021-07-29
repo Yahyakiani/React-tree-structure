@@ -16,13 +16,15 @@ export const updateProject = createAsyncThunk(
   `stamped/${UPDATE_PROJECTS}`,
   async (project) => {
     const resp = await fetch(`${API_URL}/api/projects/update_project`, {
-        method: "PUT",
-        body: project,
+        method: 'PUT',
+        body: JSON.stringify(project),
         headers:{
-          'Access-Control-Allow-Origin': '*'
+          'Content-Type':'application/json',
+          'Access-Control-Request-Method':'PUT'
         }
       }),
       response = await resp.json();
+      console.log(response);
 
     return response;
   }
@@ -36,6 +38,7 @@ export const getProjects = createAsyncThunk(
   async () => {
     const resp = await fetch(`${API_URL}/api/projects`, { method: "GET" }),
       data = await resp.json();
+      console.log(data);
 
     return data;
   }
@@ -50,13 +53,16 @@ export const projectSlice = createSlice({
       state.projects = action.payload
     },
 
-    // [updateProject.fulfilled]: (state, action) => {
+    [updateProject.fulfilled]: (state, action) => {
 
-    //   return [...state]
-    // }
+      const {id} = action.payload
+      let proj = state.projects.find(p => p.id === id);
+      proj = action.payload;
+    }
   },
 });
 
 export const selectAllProjects = (state) => state.project.projects;
+export const projectStatus = (state) => state.project.status;
 
 export default projectSlice.reducer;

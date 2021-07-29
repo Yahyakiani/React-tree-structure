@@ -25,7 +25,7 @@ const EditForm = ({ id, name, employees,closeModal }) => {
         setOptions(optionList)
         setSelectedItems(selectList)
         
-    }, [employees])
+    }, [employees,allEmployees])
 
     const onSubmit = (e)=> {
         e.preventDefault()
@@ -35,7 +35,7 @@ const EditForm = ({ id, name, employees,closeModal }) => {
             employees:selectedItems
         }
         dispatch(updateProject(projectData))
-        dispatch(getCompanies())
+        // dispatch(getCompanies())
         // console.log(projectData);
         closeModal()
 
