@@ -24,7 +24,6 @@ export const updateProject = createAsyncThunk(
         }
       }),
       response = await resp.json();
-      console.log(response);
 
     return response;
   }
@@ -44,6 +43,7 @@ export const getProjects = createAsyncThunk(
   }
 );
 
+
 export const projectSlice = createSlice({
   name: "project",
   initialState,
@@ -56,8 +56,8 @@ export const projectSlice = createSlice({
     [updateProject.fulfilled]: (state, action) => {
 
       const {id} = action.payload
-      let proj = state.projects.find(p => p.id === id);
-      proj = action.payload;
+      const index = state.projects.findIndex(p => p.id === id);
+      state.projects[index] = action.payload;
     }
   },
 });

@@ -2,7 +2,9 @@ import React from "react";
 import EditModal from "./editModal";
 import { Card, Divider, Icon, Label } from "semantic-ui-react";
 
+
 const DisplayCard = (props) => {
+
   let content;
 
   props.type === "PROJECTS"
@@ -18,6 +20,7 @@ const DisplayCard = (props) => {
             <EditModal
               id={props.id}
               name={props.name}
+              companyId={props.companyId}
               department={props.department}
               employees={props.projectEmployees}
             />

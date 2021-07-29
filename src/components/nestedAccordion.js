@@ -46,6 +46,7 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
         return {
           key: proj.id,
           title: proj.name,
+          companyId:proj.companyId,
           type: 'PROJECTS',
           department:proj.department,
           projectEmployees: projectEmployees,
@@ -152,6 +153,7 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
                 <DisplayCard 
                 id={jsonData[i].key}
                 type={'PROJECTS'}
+                companyId={jsonData[i].companyId}
                 name={jsonData[i].title}
                 department={jsonData[i].department}
                 projectEmployees={jsonData[i].projectEmployees} />

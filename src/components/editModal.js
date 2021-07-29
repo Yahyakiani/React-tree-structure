@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Header, Label, Modal } from "semantic-ui-react";
 import EditForm from "./editForm";
 
-function EditModal({ id, name, department, employees }) {
+function EditModal({ id, name, companyId, department, employees }) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -24,7 +24,7 @@ function EditModal({ id, name, department, employees }) {
             <Label>{department}</Label>
           </span>
 
-          <EditForm id={id} name={name} employees={employees} closeModal={() => setOpen(false)} />
+          <EditForm id={id} name={name} companyId={companyId} employees={employees} closeModal={() => setOpen(false)} />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>

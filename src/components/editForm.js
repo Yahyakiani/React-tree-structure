@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "semantic-ui-react";
 import { selectAllEmployee } from "../features/employeeSlice";
-import { updateProject } from "../features/projectSlice";
+import { getProjects, updateProject } from "../features/projectSlice";
 import MultipleSelect from "./multiSelect";
 
-const EditForm = ({ id, name, employees,closeModal }) => {
+const EditForm = ({ id, name, companyId, employees,closeModal }) => {
 
     const dispatch = useDispatch()
     const [selectedItems, setSelectedItems] = useState([]);
@@ -15,7 +15,7 @@ const EditForm = ({ id, name, employees,closeModal }) => {
 
     useEffect(() => {
         const selectList=employees.map(emp=> emp.id)
-        const optionList=allEmployees.map(emp=>{
+        const optionList=allEmployees.filter(emp=>emp.companyId===companyId).map(emp=>{
             return {
                 key:emp.id,
                 text:`${emp.firstName} ${emp.lastName}`,
@@ -25,7 +25,7 @@ const EditForm = ({ id, name, employees,closeModal }) => {
         setOptions(optionList)
         setSelectedItems(selectList)
         
-    }, [employees,allEmployees])
+    }, [name])
 
     const onSubmit = (e)=> {
         e.preventDefault()
@@ -35,8 +35,7 @@ const EditForm = ({ id, name, employees,closeModal }) => {
             employees:selectedItems
         }
         dispatch(updateProject(projectData))
-        // dispatch(getCompanies())
-        // console.log(projectData);
+        dispatch(getProjects())
         closeModal()
 
     }
@@ -48,7 +47,7 @@ const EditForm = ({ id, name, employees,closeModal }) => {
         <input placeholder="Project Name" value={projectName} onChange={e => setProjectname(e.target.value)} />
       </Form.Field>
       <Form.Field
-        label="Employees"
+        label="Employees from Current Company"
         control={MultipleSelect}
         options={options}
         selected={selectedItems}

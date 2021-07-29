@@ -36,5 +36,6 @@ export const employeeSlice = createSlice({
 
 
 export const selectAllEmployee = (state) => state.employee.employees
+export const selectEmployeeByCompany = (state,id) => state.employee.employees.filter(emp=>emp.companyId===id)
 
 export default employeeSlice.reducer

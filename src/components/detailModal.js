@@ -17,23 +17,23 @@ function DetailModal({ name, dob, jobTitle, jobArea, jobType,projects, size }) {
                 <Modal.Description>
                     <Header>{name}</Header>
                     <p>
-                        <Label>Date of Birth</Label>&nbsp;{new Date(dob).toLocaleDateString()}
+                        <Label as='p'>Date of Birth</Label>&nbsp;{new Date(dob).toLocaleDateString()}
                     </p>
                     <p>
-                    <Label>Job Area</Label>&nbsp;{jobArea}
+                    <Label as='p'>Job Area</Label>&nbsp;{jobArea}
                     </p>
                     <p>
-                    <Label>Job Title</Label>&nbsp;{jobTitle}
+                    <Label as='p'>Job Title</Label>&nbsp;{jobTitle}
                     </p>
                     <p>
-                    <Label>Job Type</Label>&nbsp;{jobType}
+                    <Label as='p'>Job Type</Label>&nbsp;{jobType}
                     </p>
                     {
                         projectNames?.length ?
                         <p>
-                    <Label>Projects Working on</Label>&nbsp;{projectNames.join(', ')}
+                    <Label as='p'>Projects Working on</Label>&nbsp;{projectNames.join(', ')}
                     </p>
-                    :  <Label>No Projects</Label>
+                    :  <Label as='p'>No Projects</Label>
                     }
 
                 </Modal.Description>
