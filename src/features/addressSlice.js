@@ -28,7 +28,7 @@ export const addressSlice = createSlice({
   extraReducers: {
     [getAddress.fulfilled]: (state, action) => {
 
-      state.address.push(action.payload)
+      state.address=action.payload
     }
   }
   

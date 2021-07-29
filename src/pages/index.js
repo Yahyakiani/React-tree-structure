@@ -33,7 +33,7 @@ export default function Home() {
           Company Details
         </Header>
       </Divider>
-      <NestedAccordion all_addr={addresses[0]} all_projects={projects[0]} all_companies={companies[0]} all_employees={employees[0]} />
+      <NestedAccordion all_addr={addresses} all_projects={projects} all_companies={companies} all_employees={employees} />
     </Container>
   )
 }

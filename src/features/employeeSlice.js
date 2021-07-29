@@ -28,7 +28,7 @@ export const employeeSlice = createSlice({
   extraReducers: {
     [getEmployees.fulfilled]: (state, action) => {
 
-      state.employees.push(action.payload)
+      state.employees = action.payload
     }
   }
   

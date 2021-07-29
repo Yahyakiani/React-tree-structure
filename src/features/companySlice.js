@@ -29,7 +29,7 @@ export const companySlice = createSlice({
   extraReducers: {
     [getCompanies.fulfilled]: (state, action) => {
 
-      state.companies.push(action.payload)
+      state.companies=action.payload
     }
   }
   

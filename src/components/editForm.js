@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "semantic-ui-react";
-import { getCompanies } from "../features/companySlice";
 import { selectAllEmployee } from "../features/employeeSlice";
 import { updateProject } from "../features/projectSlice";
 import MultipleSelect from "./multiSelect";
@@ -16,7 +15,7 @@ const EditForm = ({ id, name, employees,closeModal }) => {
 
     useEffect(() => {
         const selectList=employees.map(emp=> emp.id)
-        const optionList=allEmployees[0].map(emp=>{
+        const optionList=allEmployees.map(emp=>{
             return {
                 key:emp.id,
                 text:`${emp.firstName} ${emp.lastName}`,

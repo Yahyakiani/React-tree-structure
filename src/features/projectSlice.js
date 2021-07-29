@@ -47,7 +47,7 @@ export const projectSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getProjects.fulfilled]: (state, action) => {
-      state.projects.push(action.payload);
+      state.projects = action.payload
     },
 
     // [updateProject.fulfilled]: (state, action) => {
