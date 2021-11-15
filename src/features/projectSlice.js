@@ -37,7 +37,6 @@ export const getProjects = createAsyncThunk(
   async () => {
     const resp = await fetch(`${API_URL}/api/projects`, { method: "GET" }),
       data = await resp.json();
-      console.log(data);
 
     return data;
   }

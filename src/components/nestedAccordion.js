@@ -4,213 +4,187 @@ import DetailModal from './detailModal'
 import DisplayCard from './displayCard'
 import DataLoader from './loader'
 
-
-
-
 const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees }) => {
-
   const [content, setContent] = useState(null)
 
-
   useEffect(() => {
-    
-    let temp_companies;
-    if(all_companies?.length && all_addr?.length && all_projects?.length && all_employees?.length){
+    if (all_companies?.length && all_addr?.length && all_projects?.length && all_employees?.length) {
+      const data = processData(all_companies, all_employees, all_projects, all_addr),
+            accordion = generateRootAccord(data)
 
-      // Copy the companies so i can add property to the object in a specific 
-      // structure that accordian component requires
-
-      temp_companies = JSON.parse(JSON.stringify(all_companies));
-      const temp_data = process(temp_companies)
-      accordianNesting(temp_data);
-      setContent(temp_data)
+      setContent(accordion)
     }
-
-
   }, [all_companies,all_addr, all_projects, all_employees])
 
+  function generateRootAccord(data) {
+    return Object.keys(data)
+      .reduce((acc, cur) => {
+        const company = data[cur]
 
-   // Process data to covert it in the form that nestedaccordian requires
-  const process = (data) => {
-    for (const company of data) {
-
-      company.key = company.id
-      company.title = company.name
-
-      company.employees = all_employees.filter(emp => emp.companyId === company.id)
-      const address = all_addr.filter(addr => addr.companyId === company.id)
-      const projects = all_projects.filter(proj => proj.companyId === company.id).map(proj => {
-
-        //Employees working on current Project from this company
-        const projectEmployees = company.employees?.filter(ce => proj.employeesId?.some(pe => ce.id === pe));
-        return {
-          key: proj.id,
-          title: proj.name,
-          companyId:proj.companyId,
-          type: 'PROJECTS',
-          department:proj.department,
-          projectEmployees: projectEmployees,
-          content: []
-
-        }
-      })
-      let jobAreas = company.employees.map(emp => {
-
-        const areaEmployees = company.employees.filter(e => e.jobArea === emp.jobArea).map(e => {
-          let projectsPartOf=[]
-          for (const project of all_projects) {
-            const found = project?.employeesId.some(emp=> emp===e.id)
-            if(found){
-              projectsPartOf.push(project)
-            }
-          }
-
-
-          return {
-            key: e.id,
-            title: `${e.firstName} ${e.lastName}`,
-            dob: e.dateOfBirth,
-            jobArea: e.jobArea,
-            jobType: e.jobType,
-            jobTitle: e.jobTitle,
-            projects:projectsPartOf,
-            type: 'EMPLOYEES',
-            content: []
-          }
+        acc.push({
+          key: company.id,
+          title: company.name,
+          content: (
+            <Accordion.Content>
+              <Accordion.Accordion panels={[{ key: 'jobarea', title: 'Job Areas', content: generateAreasAccord(company) }]} />
+              <Accordion.Accordion panels={[{ key: 'projects', title: 'Projects', content: generateProjectsAccord(company) }]} />
+            </Accordion.Content>
+          )
         })
 
-        return {
-          key: company.employees.filter(e => e.jobArea === emp.jobArea).map(e => e.jobArea)[0],
-          title: `${company.employees.filter(e => e.jobArea === emp.jobArea).map(e => e.jobArea)[0]} (${areaEmployees.length})`,
-          content: [
-            ...areaEmployees
-          ]
-        }
-      })
-
-      //Removing Duplicate job Areas for different employees
-      jobAreas = jobAreas.filter((v, i, a) => a.findIndex(t => (t.key === v.key)) === i)
-
-      company.content = [
-        {
-          key: "Job Areas",
-          title: "Job Areas",
-          content: [...jobAreas]
-        },
-        {
-          key: "Projects",
-          title: "Projects",
-          content: [
-            ...projects,
-          ],
-        }
-        , {
-          key: "Address",
-          title: "Address",
-          content: [
-          ],
-          address: address,
-          type:'ADDRESS'
-        }
-
-      ]
-
-    };
-
-    const final = [
-      {
-        key: "Companies",
-        title: "Companies",
-        content: [...data]
-      }
-    ]
-    return final
-
+        return acc
+      }, [])
   }
 
-  // Rendering the json object recursively
-  const accordianNesting = (jsonData) => {
-    if (jsonData.length === 0) {
-      return;
-    } else {
-      for (let i = 0; i < jsonData.length; i++) {
-        accordianNesting(jsonData[i]["content"]);
+  function generateProjectsAccord({ projects }) {
+    const panels = Object.keys(projects)
+      .reduce((acc, cur) => {
+        const project = projects[cur]
 
-        if (jsonData[i]["content"].length !== 0) {
-          jsonData[i]["content"] = {
-            content: (
-              
-                <Accordion.Accordion panels={jsonData[i]["content"]} />
-              
-            ),
-          };
-        } else {
-
-          if(jsonData[i]?.type ==='PROJECTS'){
-
-            jsonData[i]["content"] = {
-              content: (
-                <DisplayCard 
-                id={jsonData[i].key}
+        acc.push({
+          key: project.id,
+          title: project.name,
+          content: (
+            <Accordion.Content>
+              <DisplayCard 
+                id={project.key}
                 type={'PROJECTS'}
-                companyId={jsonData[i].companyId}
-                name={jsonData[i].title}
-                department={jsonData[i].department}
-                projectEmployees={jsonData[i].projectEmployees} />
-                ),
-              } 
-              }
-          else if (jsonData[i]?.type ==='EMPLOYEES'){
-            jsonData[i]["content"] = {
-              content: (
-                <DetailModal 
-                size={'small'}
-                name={jsonData[i].title} 
-                dob={jsonData[i].dob} 
-                jobArea={jsonData[i].jobArea} 
-                jobTitle={jsonData[i].jobTitle} 
-                jobType={jsonData[i].jobType} 
-                projects={jsonData[i].projects}
-                 />
-                ),
-              }
-               
-          }
-          else if (jsonData[i]?.type ==='ADDRESS'){
-            jsonData[i]["content"] = {
-              content: (
-                <DisplayCard
-                type={'ADDRESS'}
-                address={jsonData[i].address[0]} />
-                ),
-              }
-          }
-          else{
-            jsonData[i]["content"] = {
-              content: (
-                <Label>No data</Label>
-                ),
-              }
+                companyId={project.companyId}
+                name={project.name}
+                department={project.department}
+                projectEmployees={project.employeesId}
+              />
+            </Accordion.Content>
+          )
+        })
 
-          }
-          
+        return acc
+      }, [])
+
+    return (
+      <Accordion.Content>
+        {panels.length 
+          ? ( <Accordion.Accordion panels={panels} /> )
+          : <Label>No data</Label>
         }
-      }
-    }
+      </Accordion.Content>
+    )
   }
 
+  function generateAreasAccord({ employees, areas }) {
+    const panels = Object.keys(areas)
+      .reduce((acc, cur) => {
+        const area = areas[cur]
 
+        acc.push({
+          key: area.name,
+          title: `${area.name} (${area.employees.length})`,
+          content: (
+            <Accordion.Content>
+              <ul style={{ margin: 0, padding: '.75em 1em', listStyleType: 'none' }}>
+                {area.employees.map(employee => {
+                  const emp = employees[employee]
 
+                  return (
+                    <li key={emp.id} style={{ marginBottom: 14 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span>{emp.firstName} {emp.lastName}</span>
+                        <DetailModal 
+                          size={'small'}
+                          name={emp.name}
+                          dob={emp.dateOfBirth} 
+                          jobArea={emp.jobArea} 
+                          jobTitle={emp.jobTitle} 
+                          jobType={emp.jobType} 
+                          projects={emp.projects}
+                        />
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            </Accordion.Content>
+          )
+        })
+
+        return acc
+      }, [])
+
+    return (
+      <Accordion.Content>
+        {panels.length 
+          ? <Accordion.Accordion panels={panels} />
+          : <Label>No data</Label>
+        }
+      </Accordion.Content>
+    )
+  }
+
+  function processData(companies, employees, projects, adresses) {
+    /* create initial company entries */
+    const data = companies
+      .reduce((acc, company) => {
+        acc[company.id] = {
+          ...company,
+          areas: {},
+          employees: {},
+          projects: []
+        }
+
+        return acc
+      }, {})
+
+    /* loop all employees once and create areas/employees entries */
+    for (let i = 0; i < employees.length; i++) {
+      const employee = { ...employees[i], projects: [] },
+            company = data[employee.companyId],
+            area = employee.jobArea.toLowerCase()
+
+      company.employees[employee.id] = employee
+
+      /* check if area key is not registered */
+      if (!company.areas[area]) {
+        /* set initial value */
+        company.areas[area] = {
+          name: area,
+          employees: []
+        }
+      }
+
+      company.areas[area].employees.push(employee.id)
+    }
+
+    /* loop all projects */
+    for (let i = 0; i < projects.length; i++) {
+      const project = { ...projects[i] },
+            company = data[project.companyId],
+            employees = project.employeesId
+
+      project.employeesId = employees.map((emp) => {
+        const employee = company.employees[emp]
+        // console.log(employee);
+  
+        company.employees[emp]?.projects.push(project.name)
+
+        return employee ? { id: emp, name: `${employee.firstName} ${employee.lastName}}` } : null
+      })
+      project.employeesId=project.employeesId.filter(emp=> emp !=null)
+      // console.log(project.employeesId);
+
+      company.projects.push(project)
+    }
+
+    return data
+  }
 
   return (
     <>
-    {
-
-      content!==null ?
-      <Accordion defaultActiveIndex={-1} panels={content} styled /> : <DataLoader />
-    }
+      { content !== null
+        ? <Accordion defaultActiveIndex={0} panels={content} styled /> 
+        : <DataLoader />
+      }
     </>
-  );
+  )
 }
 
-export default NestedAccordion;
+export default NestedAccordion
