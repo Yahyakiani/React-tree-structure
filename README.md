@@ -9,3 +9,5 @@ Company name
     Employees names
 ```
 - A Test Application for conversion of complex data structure to a tree like structure using Redux toolkit along with asynchronous API 
+
+![Working](./working.gif)
