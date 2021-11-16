@@ -28,7 +28,7 @@ const DisplayCard = (props) => {
             {props.projectEmployees?.map((emp) => (
               <div key={emp.id}>
                 <Icon name='user'>
-                  {emp.firstName} {emp.lastName}
+                  {emp.name}
                 </Icon>
               </div>
             ))}

@@ -162,14 +162,12 @@ const NestedAccordion = ({ all_companies, all_addr, all_projects, all_employees 
 
       project.employeesId = employees.map((emp) => {
         const employee = company.employees[emp]
-        // console.log(employee);
   
         company.employees[emp]?.projects.push(project.name)
 
-        return employee ? { id: emp, name: `${employee.firstName} ${employee.lastName}}` } : null
+        return employee ? { id: emp, name: `${employee.firstName} ${employee.lastName}` } : null
       })
       project.employeesId=project.employeesId.filter(emp=> emp !=null)
-      // console.log(project.employeesId);
 
       company.projects.push(project)
     }

@@ -3,7 +3,7 @@ import { Button, Header, Label, Modal } from 'semantic-ui-react'
 
 function DetailModal({ name, dob, jobTitle, jobArea, jobType,projects, size }) {
     const [open, setOpen] = React.useState(false)
-    const projectNames=projects?.map(proj=>proj.name) 
+    const projectNames=projects?.map(proj=>proj) 
 
     return (
         <Modal
